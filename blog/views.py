@@ -4,16 +4,21 @@ from django.shortcuts import render, HttpResponse
 
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.decorators import api_view, authentication_classes
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 
 from blog.models import Post
 from blog.serializers import PostSerializer
 
-
+@api_view(['GET'])
 def index(request):
-    return HttpResponse("Hello world")
+    # if request.user.is_authenticated:
+    posts = Post.objects.all()
+    serializer = PostSerializer(posts, many=True)
+    return HttpResponse(serializer.data)
+    # return HttpResponse("Hello nobody")
 
 @api_view(['GET', 'POST'])
 def post_list(request):
