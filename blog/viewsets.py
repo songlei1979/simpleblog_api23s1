@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import viewsets, mixins
 from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import IsAuthenticated
 
 from blog.models import Post
 from blog.permissions import IsAuthorOrReadOnly
@@ -10,7 +11,7 @@ from blog.serializers import PostSerializer, UserSerializer
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthorOrReadOnly]
+    permission_classes = [IsAuthorOrReadOnly, IsAuthenticated]
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()

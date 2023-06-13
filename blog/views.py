@@ -10,7 +10,8 @@ from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 
 from blog.models import Post
-from blog.serializers import PostSerializer
+from blog.serializers import PostSerializer, UserSerializer
+
 
 @api_view(['GET'])
 def index(request):
@@ -57,6 +58,14 @@ def post_detail(request, id):
     elif request.method == "DELETE":
         post.delete()
         return Response("Deleted")
+
+@api_view(['GET', ])
+def get_user_id(request):
+    try:
+        return Response(request.user.id)
+    except:
+        return Response(None)
+
 
 
 
